@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Summer Command Center</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <section class="hero" aria-label="Summer Command Center">
+        <img src="assets/summer-command-center.png" alt="" />
+        <div class="hero-copy">
+          <p>Summer Command Center</p>
+          <h1>Keep days busy, balanced, and mostly argument-proof.</h1>
+        </div>
+      </section>
+
+      <section class="topbar" aria-label="Today controls">
+        <div>
+          <p class="eyebrow">Today</p>
+          <h2 id="todayLabel">Family Plan</h2>
+        </div>
+        <div class="topbar-actions">
+          <button class="icon-button" id="resetDay" type="button" aria-label="Reset today" title="Reset today">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M3 12a9 9 0 1 0 3-6.7" />
+              <path d="M3 4v6h6" />
+            </svg>
+          </button>
+          <button class="primary" id="addKid" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 5v14" />
+              <path d="M5 12h14" />
+            </svg>
+            Add kid
+          </button>
+        </div>
+      </section>
+
+      <section class="layout">
+        <aside class="panel setup-panel" aria-label="Family setup">
+          <div class="panel-heading">
+            <h2>Family</h2>
+            <span id="kidCount">0 kids</span>
+          </div>
+          <form id="kidForm" class="add-form">
+            <label>
+              Kid name
+              <input id="kidName" maxlength="22" autocomplete="off" placeholder="Avery" />
+            </label>
+            <button type="submit">Add</button>
+          </form>
+          <div id="kidList" class="kid-list"></div>
+        </aside>
+
+        <section class="main-grid" aria-live="polite">
+          <article class="panel score-panel">
+            <div class="panel-heading">
+              <h2>Day Score</h2>
+              <span id="scoreText">0%</span>
+            </div>
+            <div class="meter" aria-hidden="true"><span id="scoreBar"></span></div>
+            <div class="stats">
+              <div>
+                <strong id="choresDone">0</strong>
+                <span>chores done</span>
+              </div>
+              <div>
+                <strong id="outsideDone">0</strong>
+                <span>outside blocks</span>
+              </div>
+              <div>
+                <strong id="screenBank">0</strong>
+                <span>earned minutes</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="panel schedule-panel">
+            <div class="panel-heading">
+              <h2>Rhythm</h2>
+              <span>morning to evening</span>
+            </div>
+            <div id="routineList" class="routine-list"></div>
+          </article>
+
+          <article class="panel chores-panel">
+            <div class="panel-heading">
+              <h2>Chores</h2>
+              <button class="text-button" id="addChore" type="button">Add chore</button>
+            </div>
+            <div id="choreList" class="task-list"></div>
+          </article>
+
+          <article class="panel balance-panel">
+            <div class="panel-heading">
+              <h2>Balance</h2>
+              <span>outside first</span>
+            </div>
+            <div id="balanceList" class="task-list"></div>
+          </article>
+        </section>
+      </section>
+    </main>
+
+    <dialog id="taskDialog">
+      <form id="taskForm" class="dialog-card">
+        <div class="panel-heading">
+          <h2 id="dialogTitle">Add chore</h2>
+          <button class="icon-button" id="closeDialog" type="button" aria-label="Close" title="Close">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M18 6 6 18" />
+              <path d="m6 6 12 12" />
+            </svg>
+          </button>
+        </div>
+        <label>
+          Task
+          <input id="taskName" maxlength="42" required placeholder="Wipe counters" />
+        </label>
+        <label>
+          Assign to
+          <select id="taskKid"></select>
+        </label>
+        <label>
+          Minutes earned
+          <input id="taskMinutes" type="number" min="0" max="60" step="5" value="10" />
+        </label>
+        <menu>
+          <button id="cancelTask" type="button">Cancel</button>
+          <button class="primary" id="saveTask" type="submit">Save</button>
+        </menu>
+      </form>
+    </dialog>
+
+    <script src="app.js"></script>
+  </body>
+</html>
