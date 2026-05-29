@@ -9,13 +9,17 @@
   --leaf: #2f7d4c;
   --leaf-dark: #215c38;
   --sun: #f2b84b;
-  --coral: #e96f50;
+  --coral: #d86a51;
   --blue: #487fa8;
   --shadow: 0 18px 45px rgba(24, 38, 29, 0.1);
 }
 
 * {
   box-sizing: border-box;
+}
+
+[hidden] {
+  display: none !important;
 }
 
 body {
@@ -28,7 +32,8 @@ body {
 
 button,
 input,
-select {
+select,
+textarea {
   font: inherit;
 }
 
@@ -69,7 +74,7 @@ button {
 .hero-copy {
   position: relative;
   z-index: 1;
-  width: min(560px, 84%);
+  width: min(600px, 84%);
   padding: clamp(28px, 6vw, 68px);
   color: white;
 }
@@ -85,15 +90,15 @@ button {
 
 .hero-copy h1 {
   margin: 0;
+  max-width: 11ch;
   font-size: clamp(2.25rem, 5vw, 5.2rem);
   line-height: 0.95;
-  max-width: 10ch;
   letter-spacing: 0;
 }
 
 .topbar,
-.layout,
-.main-grid {
+.summary-grid,
+.profiles {
   display: grid;
   gap: 16px;
 }
@@ -105,7 +110,9 @@ button {
 }
 
 .topbar h2,
-.panel h2 {
+.panel h2,
+.profile-card h2,
+.section-heading h3 {
   margin: 0;
   letter-spacing: 0;
 }
@@ -120,16 +127,13 @@ button {
   align-items: center;
 }
 
-.layout {
-  grid-template-columns: 280px 1fr;
-  align-items: start;
+.summary-grid {
+  grid-template-columns: 1fr 1fr;
+  margin-bottom: 16px;
 }
 
-.main-grid {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-.panel {
+.panel,
+.profile-card {
   background: var(--panel);
   border: 1px solid var(--line);
   border-radius: 8px;
@@ -137,7 +141,9 @@ button {
   box-shadow: 0 1px 0 rgba(23, 33, 27, 0.03);
 }
 
-.panel-heading {
+.panel-heading,
+.profile-heading,
+.section-heading {
   display: flex;
   min-height: 36px;
   align-items: center;
@@ -146,20 +152,22 @@ button {
   margin-bottom: 14px;
 }
 
-.panel-heading h2 {
+.panel-heading h2,
+.profile-heading h2 {
   font-size: 1.05rem;
 }
 
-.panel-heading span {
+.panel-heading span,
+.profile-heading > span {
   color: var(--muted);
   font-size: 0.86rem;
-  font-weight: 700;
+  font-weight: 800;
 }
 
-.add-form {
-  display: grid;
+.profile-heading > div {
+  display: flex;
+  align-items: center;
   gap: 10px;
-  margin-bottom: 14px;
 }
 
 label {
@@ -171,15 +179,26 @@ label {
 }
 
 input,
-select {
+select,
+textarea {
   min-width: 0;
   width: 100%;
-  min-height: 42px;
   border: 1px solid var(--line);
   border-radius: 6px;
   background: #fff;
   color: var(--ink);
   padding: 0 12px;
+}
+
+input,
+select {
+  min-height: 42px;
+}
+
+textarea {
+  min-height: 82px;
+  padding-top: 11px;
+  resize: vertical;
 }
 
 button {
@@ -228,25 +247,35 @@ svg {
   stroke-width: 2;
 }
 
-.kid-list,
-.task-list,
-.routine-list {
+.profile-tabs {
   display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 10px;
+  margin: 6px 0 16px;
 }
 
-.kid-card,
-.task,
-.routine {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  gap: 10px;
+.profile-tab {
+  display: flex;
   align-items: center;
-  min-height: 56px;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: #fcfdf9;
-  padding: 10px;
+  justify-content: center;
+  gap: 9px;
+  min-width: 0;
+  background: #fff;
+}
+
+.profile-tab.active {
+  border-color: var(--leaf);
+  box-shadow: inset 0 0 0 1px var(--leaf);
+}
+
+.profiles {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: start;
+}
+
+.profile-card {
+  display: grid;
+  gap: 16px;
 }
 
 .kid-avatar {
@@ -260,18 +289,80 @@ svg {
   font-weight: 900;
 }
 
-.kid-card strong,
+.kid-avatar.large {
+  width: 44px;
+  height: 44px;
+}
+
+.kid-avatar.blue {
+  background: #e3eef5;
+  color: #235a80;
+}
+
+.kid-avatar.coral {
+  background: #fbe7df;
+  color: #a74732;
+}
+
+.kid-avatar.green {
+  background: var(--mint);
+  color: var(--leaf-dark);
+}
+
+.enrichment-form,
+.quick-add,
+.task-list,
+.rotation-list {
+  display: grid;
+  gap: 10px;
+}
+
+.enrichment-form {
+  padding-bottom: 2px;
+}
+
+.quick-add {
+  grid-template-columns: 1fr auto;
+}
+
+.task,
+.rotation-row {
+  display: grid;
+  gap: 10px;
+  align-items: center;
+  min-height: 56px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fcfdf9;
+  padding: 10px;
+}
+
+.task {
+  grid-template-columns: auto 1fr auto;
+}
+
+.rotation-row {
+  grid-template-columns: 1fr auto;
+}
+
 .task strong,
-.routine strong {
+.rotation-row strong {
   display: block;
   overflow-wrap: anywhere;
   line-height: 1.15;
 }
 
-.kid-card span,
 .task span,
-.routine span {
+.rotation-row span {
   color: var(--muted);
+  font-size: 0.84rem;
+}
+
+.rotation-row b {
+  border-radius: 999px;
+  background: #f3f7ef;
+  color: var(--leaf-dark);
+  padding: 7px 10px;
   font-size: 0.84rem;
 }
 
@@ -280,6 +371,15 @@ svg {
   min-width: 34px;
   min-height: 34px;
   color: var(--coral);
+}
+
+.lock {
+  border-radius: 999px;
+  background: #f3f7ef;
+  padding: 5px 8px;
+  font-size: 0.72rem;
+  font-weight: 900;
+  text-transform: uppercase;
 }
 
 .check {
@@ -293,15 +393,13 @@ svg {
   color: transparent;
 }
 
-.task.done .check,
-.routine.done .check {
+.task.done .check {
   border-color: var(--leaf);
   background: var(--leaf);
   color: white;
 }
 
-.task.done strong,
-.routine.done strong {
+.task.done strong {
   text-decoration: line-through;
   text-decoration-thickness: 2px;
   text-decoration-color: rgba(47, 125, 76, 0.42);
@@ -339,6 +437,7 @@ svg {
 
 .stats strong {
   display: block;
+  overflow-wrap: anywhere;
   font-size: 1.55rem;
   line-height: 1;
 }
@@ -351,54 +450,23 @@ svg {
   font-weight: 800;
 }
 
-.schedule-panel,
-.chores-panel,
-.balance-panel {
-  min-height: 280px;
-}
-
-.empty {
-  border: 1px dashed #bdcdbb;
-  border-radius: 8px;
-  color: var(--muted);
-  padding: 18px;
-  text-align: center;
-}
-
-dialog {
-  width: min(420px, calc(100% - 28px));
-  border: 0;
-  border-radius: 8px;
-  padding: 0;
-  box-shadow: var(--shadow);
-}
-
-dialog::backdrop {
-  background: rgba(18, 27, 21, 0.42);
-}
-
-.dialog-card {
-  display: grid;
-  gap: 14px;
-  padding: 18px;
-}
-
-menu {
-  display: flex;
-  justify-content: end;
-  gap: 10px;
-  margin: 4px 0 0;
-  padding: 0;
-}
-
-@media (max-width: 860px) {
-  .layout,
-  .main-grid {
+@media (max-width: 1060px) {
+  .profiles {
     grid-template-columns: 1fr;
   }
 
-  .setup-panel {
-    order: -1;
+  .profile-card {
+    display: none;
+  }
+
+  .profile-card.active {
+    display: grid;
+  }
+}
+
+@media (max-width: 780px) {
+  .summary-grid {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -434,10 +502,15 @@ menu {
   }
 
   .topbar-actions {
-    justify-content: space-between;
+    justify-content: flex-end;
   }
 
-  .stats {
+  .profile-tabs {
+    grid-template-columns: 1fr;
+  }
+
+  .stats,
+  .quick-add {
     grid-template-columns: 1fr;
   }
 }
